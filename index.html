@@ -1,250 +1,473 @@
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A responsive Flow Room task allocation demonstration project.">
     <title>Flow Room Task Allocation</title>
+
+    <style>
+        /* General styles shared by mobile and desktop */
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background-color: #f0f2f5;
+            color: #333333;
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .skip-link {
+            position: absolute;
+            left: 12px;
+            top: -80px;
+            padding: 10px 14px;
+            background: white;
+            color: #003d80;
+            border: 2px solid #003d80;
+            z-index: 10;
+        }
+
+        .skip-link:focus {
+            top: 12px;
+        }
+
+        .page {
+            width: min(1100px, calc(100% - 48px));
+            margin: 32px auto;
+        }
+
+        .site-header {
+            background-color: #243b55;
+            color: white;
+            padding: 28px 32px;
+            border-radius: 10px;
+        }
+
+        .site-header h1 {
+            margin: 0;
+            font-size: 30px;
+        }
+
+        .site-header p {
+            margin: 8px 0 0;
+            color: #e1e8f1;
+        }
+
+        h2, h3 {
+            color: #243b55;
+        }
+
+        h2 {
+            margin: 0 0 14px;
+            font-size: 22px;
+        }
+
+        h3 {
+            margin: 20px 0 8px;
+            font-size: 18px;
+        }
+
+        .introduction {
+            margin: 20px 0;
+        }
+
+        /* Desktop layout: information panels side by side */
+        .overview-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .panel {
+            background-color: white;
+            border: 1px solid #dde3e9;
+            border-radius: 10px;
+            padding: 22px;
+        }
+
+        .panel p:first-of-type {
+            margin-top: 0;
+        }
+
+        .tasks-panel, .about-panel {
+            margin-top: 20px;
+        }
+
+        .task-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .task-table caption {
+            text-align: left;
+            padding-bottom: 12px;
+            color: #555555;
+        }
+
+        .task-table thead {
+            background-color: #243b55;
+            color: white;
+        }
+
+        .task-table th, .task-table td {
+            border: 1px solid #d9dfe7;
+            padding: 12px;
+            text-align: left;
+        }
+
+        .task-table tbody th {
+            font-weight: normal;
+        }
+
+        .task-table tbody tr:nth-child(even) {
+            background-color: #f7f9fb;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+
+        .completed {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .pending {
+            background-color: #fff3cd;
+            color: #785600;
+        }
+
+        .in-progress {
+            background-color: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .checklist {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .checklist li {
+            margin: 10px 0;
+        }
+
+        .checklist label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .checklist input {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+            accent-color: #243b55;
+        }
+
+        .note {
+            margin-top: 18px;
+            color: #555555;
+            font-size: 14px;
+        }
+
+        a {
+            color: #004a99;
+        }
+
+        a:focus-visible, input:focus-visible {
+            outline: 3px solid #e18a00;
+            outline-offset: 3px;
+        }
+
+        .site-footer {
+            text-align: center;
+            color: #555555;
+            margin-top: 26px;
+            font-size: 14px;
+        }
+
+
+        /* Live API panel */
+        .weather-panel {
+            margin-top: 20px;
+        }
+
+        .weather-values {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .weather-metric {
+            padding: 16px;
+            border: 1px solid #dde3e9;
+            background-color: #f7f9fb;
+            border-radius: 8px;
+        }
+
+        .weather-metric span {
+            display: block;
+            color: #444444;
+        }
+
+        .weather-metric strong {
+            display: block;
+            font-size: 24px;
+            color: #243b55;
+            margin-top: 6px;
+        }
+
+        .weather-actions {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .weather-actions button {
+            color: white;
+            background-color: #243b55;
+            padding: 10px 16px;
+            border: 0;
+            border-radius: 6px;
+            font: inherit;
+            cursor: pointer;
+        }
+
+        .weather-actions button:hover {
+            background-color: #345577;
+        }
+
+        .weather-actions button:disabled {
+            opacity: 0.6;
+            cursor: wait;
+        }
+
+        .weather-actions button:focus-visible {
+            outline: 3px solid #e18a00;
+            outline-offset: 3px;
+        }
+
+        .weather-actions p {
+            margin: 0;
+        }
+
+        /* Mobile layout: stack panels and display task rows as cards */
+        @media (max-width: 700px) {
+            .page {
+                width: calc(100% - 24px);
+                margin: 12px auto;
+            }
+
+            .site-header {
+                padding: 20px 18px;
+            }
+
+            .site-header h1 {
+                font-size: 23px;
+            }
+
+            .overview-grid, .weather-values {
+                grid-template-columns: 1fr;
+                gap: 14px;
+            }
+
+            .panel {
+                padding: 16px;
+            }
+
+            .tasks-panel, .about-panel, .weather-panel {
+                margin-top: 14px;
+            }
+
+            h2 {
+                font-size: 20px;
+            }
+
+            .task-table,
+            .task-table tbody,
+            .task-table tr,
+            .task-table th,
+            .task-table td {
+                display: block;
+                width: 100%;
+            }
+
+            .task-table thead {
+                position: absolute;
+                width: 1px;
+                height: 1px;
+                overflow: hidden;
+                clip-path: inset(50%);
+                white-space: nowrap;
+            }
+
+            .task-table tbody tr {
+                border: 1px solid #d9dfe7;
+                border-radius: 8px;
+                padding: 12px;
+                margin-bottom: 12px;
+                background-color: white;
+            }
+
+            .task-table tbody th {
+                border: 0;
+                padding: 0 0 8px;
+                color: #243b55;
+                font-weight: bold;
+            }
+
+            .task-table td {
+                border: 0;
+                padding: 5px 0;
+            }
+
+            .task-table td::before {
+                content: attr(data-label) ": ";
+                color: #555555;
+                font-weight: bold;
+            }
+
+            .task-table tbody tr:nth-child(even) {
+                background-color: white;
+            }
+        }
+    </style>
 </head>
 
-<body style="background-color: #f0f2f5;
-             font-family: Arial, sans-serif;
-             color: #333333;
-             margin: 40px;">
+<body>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
 
-    <!-- Accessibility: Skip Navigation -->
-    <a href="#main-content"
-       style="color: #004a99;">
-        Skip to main content
-    </a>
+    <main class="page" id="main-content">
+        <header class="site-header">
+            <h1>Flow Room - Task Allocation</h1>
+            <p>Organising daily tasks and responsibilities</p>
+        </header>
 
-    <!-- Main Content Landmark -->
-    <main id="main-content">
-
-        <!-- Main Heading -->
-        <h1 style="background-color: #243b55;
-                   color: white;
-                   text-align: center;
-                   padding: 25px;
-                   border-radius: 8px;">
-            Flow Room - Task Allocation
-        </h1>
-
-        <p>Welcome to the Flow Room Task Allocation System.</p>
-
-        <p>
-            This webpage helps our team organise daily tasks
-            and keep track of responsibilities.
-        </p>
-
-        <!-- Shift Information -->
-        <h2 style="color: #243b55;">Shift Information</h2>
-
-        <div style="background-color: white;
-                    padding: 15px;
-                    border-radius: 8px;">
-
-            <p><strong>Shift:</strong> Day Shift</p>
-            <p><strong>Department:</strong> Flow Room</p>
-
+        <div class="introduction">
+            <p>Welcome to the Flow Room Task Allocation System.</p>
+            <p>This webpage helps our team organise daily tasks and keep track of responsibilities.</p>
         </div>
 
-        <!-- Task Allocation Table -->
-        <h2 style="color: #243b55;">Today's Tasks</h2>
+        <div class="overview-grid">
+            <section class="panel" aria-labelledby="shift-heading">
+                <h2 id="shift-heading">Shift Information</h2>
+                <p><strong>Shift:</strong> Day Shift</p>
+                <p><strong>Department:</strong> Flow Room</p>
+            </section>
 
-        <table border="1" cellpadding="12"
-               style="width: 100%;
-                      border-collapse: collapse;
-                      background-color: white;
-                      border-color: #dddddd;">
-
-            <caption style="padding: 10px;
-                            text-align: left;
-                            color: #333333;">
-                Daily task allocation and current status
-            </caption>
-
-            <!-- Accessible Column Headings -->
-            <thead>
-                <tr style="background-color: #243b55;
-                           color: white;">
-                    <th scope="col">Task</th>
-                    <th scope="col">Assigned To</th>
-                    <th scope="col">Deadline</th>
-                    <th scope="col">Status</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                <tr>
-                    <th scope="row"
-                        style="text-align: left;
-                               font-weight: normal;">
-                        System Checks
-                    </th>
-                    <td>Technician 1</td>
-                    <td>08:00</td>
-                    <td style="background-color: #d4edda;
-                               color: #155724;">
-                        Completed
-                    </td>
-                </tr>
-
-                <tr>
-                    <th scope="row"
-                        style="text-align: left;
-                               font-weight: normal;">
-                        Check Outstanding Tickets
-                    </th>
-                    <td>Technician 2</td>
-                    <td>10:00</td>
-                    <td style="background-color: #fff3cd;
-                               color: #856404;">
-                        Pending
-                    </td>
-                </tr>
-
-                <tr>
-                    <th scope="row"
-                        style="text-align: left;
-                               font-weight: normal;">
-                        Review System Performance
-                    </th>
-                    <td>Senior Technician</td>
-                    <td>12:00</td>
-                    <td style="background-color: #d1ecf1;
-                               color: #0c5460;">
-                        In Progress
-                    </td>
-                </tr>
-
-                <tr>
-                    <th scope="row"
-                        style="text-align: left;
-                               font-weight: normal;">
-                        Complete Shift Handover
-                    </th>
-                    <td>Shift Manager</td>
-                    <td>18:00</td>
-                    <td style="background-color: #fff3cd;
-                               color: #856404;">
-                        Pending
-                    </td>
-                </tr>
-            </tbody>
-
-        </table>
-
-        <!-- Accessible Task Completion -->
-        <h2 style="color: #243b55;">Task Completion</h2>
-
-        <div style="background-color: white;
-                    padding: 15px;
-                    border-radius: 8px;">
-
-            <p>Tick the boxes when tasks are completed:</p>
-
-            <p>
-                <input type="checkbox"
-                       id="system-checks"
-                       checked>
-                <label for="system-checks">
-                    System Checks
-                </label>
-            </p>
-
-            <p>
-                <input type="checkbox"
-                       id="outstanding-tickets">
-                <label for="outstanding-tickets">
-                    Outstanding Tickets
-                </label>
-            </p>
-
-            <p>
-                <input type="checkbox"
-                       id="system-performance">
-                <label for="system-performance">
-                    System Performance
-                </label>
-            </p>
-
-            <p>
-                <input type="checkbox"
-                       id="shift-handover">
-                <label for="shift-handover">
-                    Shift Handover
-                </label>
-            </p>
-
-            <p style="color: #555555;
-                      font-size: 14px;">
-                Note: These checkboxes are for demonstration
-                purposes and do not automatically update
-                the task statuses in the table.
-            </p>
-
+            <section class="panel" aria-labelledby="completion-heading">
+                <h2 id="completion-heading">Task Completion</h2>
+                <p>Tick the boxes when tasks are completed:</p>
+                <ul class="checklist">
+                    <li><label><input type="checkbox" checked> System Checks</label></li>
+                    <li><label><input type="checkbox"> Outstanding Tickets</label></li>
+                    <li><label><input type="checkbox"> System Performance</label></li>
+                    <li><label><input type="checkbox"> Shift Handover</label></li>
+                </ul>
+                <p class="note">These example checkboxes do not update the task table or save changes.</p>
+            </section>
         </div>
 
-        <!-- About This Website -->
-        <h2 style="color: #243b55;">About This Website</h2>
+        <section class="panel tasks-panel" aria-labelledby="tasks-heading">
+            <h2 id="tasks-heading">Today's Tasks</h2>
+            <table class="task-table">
+                <caption>Daily task allocation and current status</caption>
+                <thead>
+                    <tr>
+                        <th scope="col">Task</th>
+                        <th scope="col">Assigned To</th>
+                        <th scope="col">Deadline</th>
+                        <th scope="col">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">System Checks</th>
+                        <td data-label="Assigned To">Technician 1</td>
+                        <td data-label="Deadline">08:00</td>
+                        <td data-label="Status"><span class="status completed">Completed</span></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Check Outstanding Tickets</th>
+                        <td data-label="Assigned To">Technician 2</td>
+                        <td data-label="Deadline">10:00</td>
+                        <td data-label="Status"><span class="status pending">Pending</span></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Review System Performance</th>
+                        <td data-label="Assigned To">Senior Technician</td>
+                        <td data-label="Deadline">12:00</td>
+                        <td data-label="Status"><span class="status in-progress">In Progress</span></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Complete Shift Handover</th>
+                        <td data-label="Assigned To">Shift Manager</td>
+                        <td data-label="Deadline">18:00</td>
+                        <td data-label="Status"><span class="status pending">Pending</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
 
-        <p>
-            This is a basic HTML version of a task allocation
-            system developed to improve team organisation
-            and accountability.
-        </p>
 
-        <hr style="border: 1px solid #dddddd;
-                   margin-top: 30px;
-                   margin-bottom: 30px;">
+        <!-- API feature: live local weather for staff travelling to shifts -->
+        <section class="panel weather-panel" aria-labelledby="weather-heading">
+            <h2 id="weather-heading">Local Weather - Mansfield</h2>
+            <p>Current estimated weather conditions to help staff plan journeys around their shifts.</p>
 
-        <!-- About Me Section -->
-        <section style="background-color: white;
-                        padding: 20px;
-                        border-radius: 8px;"
-                 aria-labelledby="about-me-heading">
+            <div class="weather-values">
+                <div class="weather-metric">
+                    <span>Temperature</span>
+                    <strong id="weather-temperature">--</strong>
+                </div>
+                <div class="weather-metric">
+                    <span>Humidity</span>
+                    <strong id="weather-humidity">--</strong>
+                </div>
+                <div class="weather-metric">
+                    <span>Wind speed</span>
+                    <strong id="weather-wind">--</strong>
+                </div>
+            </div>
 
-            <h2 id="about-me-heading"
-                style="color: #243b55;">
-                About Me
-            </h2>
-
-            <p>
-                I am currently studying Software Engineering
-                and learning how to create websites using HTML
-                for Web Technologies.
+            <div class="weather-actions">
+                <button id="weather-refresh" type="button">Refresh weather</button>
+                <p id="weather-status" role="status" aria-live="polite">Loading weather...</p>
+            </div>
+            <p class="note">Weather estimates supplied by
+                <a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Open-Meteo</a>.
+                The data may not exactly match local conditions.
             </p>
+        </section>
 
-            <p>
-                I work in a warehouse Flow Room, where
-                organisation, teamwork and communication
-                are important parts of my role.
-            </p>
+        <section class="panel about-panel" aria-labelledby="about-heading">
+            <h2 id="about-heading">About This Website</h2>
+            <p>This is a basic HTML version of a task allocation system developed to improve team organisation and accountability.</p>
 
-            <!-- Project Information -->
-            <h3 style="color: #243b55;">
-                Why I Created This Website
-            </h3>
+            <h3>About Me</h3>
+            <p>I am currently studying Software Engineering and learning how to create websites using HTML for Web Technologies.</p>
+            <p>I work in a warehouse Flow Room, where organisation, teamwork and communication are important parts of my role.</p>
 
-            <p>
-                I decided to create a
-                <strong>Task Allocation Website</strong>
-                inspired by a project I have been developing
-                for my workplace.
-            </p>
+            <h3>Why I Created This Website</h3>
+            <p>I decided to create a <strong>Task Allocation Website</strong> inspired by a project I have been developing for my workplace.</p>
+            <p>The main purpose is to help improve <em>organisation and accountability</em> within a team.</p>
 
-            <p>
-                The main purpose is to help improve
-                <em>organisation and accountability</em>
-                within a team.
-            </p>
-
-            <!-- Website Features -->
-            <h3 style="color: #243b55;">Website Features</h3>
-
-            <ul style="line-height: 1.8;">
+            <h3>Website Features</h3>
+            <ul>
                 <li>Display daily tasks</li>
                 <li>Assign responsibilities to team members</li>
                 <li>Show task deadlines</li>
@@ -252,40 +475,71 @@
                 <li>Help organise daily shift activities</li>
             </ul>
 
-            <!-- Learning Goals -->
-            <h3 style="color: #243b55;">What I Want to Learn</h3>
-
-            <p>
-                I would like to improve my HTML skills
-                before moving on to CSS and JavaScript.
-                My goal is to eventually create a fully
-                functional task management application.
-            </p>
-
-            <p>
-                View the source code for this project on
-                <a href="https://github.com/BartoszMaliszewski/FlowroomAllocations"
-                   style="color: #004a99;
-                          text-decoration: underline;">
-                    GitHub
-                </a>.
-            </p>
-
+            <h3>What I Want to Learn</h3>
+            <p>I would like to improve my HTML skills before moving on to more advanced CSS and JavaScript. My goal is to eventually create a fully functional task management application.</p>
+            <p>View the source code for this project on <a href="https://github.com/BartoszMaliszewski/FlowroomAllocations">GitHub</a>.</p>
         </section>
 
+        <footer class="site-footer">
+            <p>Flow Room Task Allocation - Web Technologies Project</p>
+        </footer>
     </main>
 
-    <!-- Accessible Footer -->
-    <footer style="text-align: center;
-                   color: #555555;
-                   margin-top: 30px;
-                   font-size: 14px;">
+    <script>
+        // Open-Meteo returns JSON weather data and does not require an API key.
+        // Example location: Mansfield, Nottinghamshire (approximately 53.14, -1.20).
+        const weatherUrl =
+            "https://api.open-meteo.com/v1/forecast" +
+            "?latitude=53.14&longitude=-1.20" +
+            "&current=temperature_2m,relative_humidity_2m,wind_speed_10m" +
+            "&timezone=Europe%2FLondon";
 
-        <p>
-            Flow Room Task Allocation - Web Technologies Project
-        </p>
+        const weatherRefresh = document.getElementById("weather-refresh");
+        const weatherStatus = document.getElementById("weather-status");
 
-    </footer>
+        async function loadWeather() {
+            weatherRefresh.disabled = true;
+            weatherStatus.textContent = "Loading weather...";
 
+            try {
+                // Fetch live data from the public API.
+                const response = await fetch(weatherUrl);
+                if (!response.ok) {
+                    throw new Error("The weather service returned an error.");
+                }
+
+                // Convert the JSON response to a JavaScript object.
+                const data = await response.json();
+                const current = data.current;
+
+                if (!current ||
+                    !Number.isFinite(current.temperature_2m) ||
+                    !Number.isFinite(current.relative_humidity_2m) ||
+                    !Number.isFinite(current.wind_speed_10m)) {
+                    throw new Error("Weather data was incomplete.");
+                }
+
+                document.getElementById("weather-temperature").textContent =
+                    current.temperature_2m.toFixed(1) + " \u00B0C";
+                document.getElementById("weather-humidity").textContent =
+                    current.relative_humidity_2m + "%";
+                document.getElementById("weather-wind").textContent =
+                    current.wind_speed_10m.toFixed(1) + " km/h";
+
+                weatherStatus.textContent =
+                    "Updated for " + current.time.replace("T", " ") + " (UK time).";
+            } catch (error) {
+                // Show a clear error without breaking the rest of the page.
+                weatherStatus.textContent =
+                    "Weather unavailable. Check your connection and try again.";
+                console.error("Unable to load weather:", error);
+            } finally {
+                weatherRefresh.disabled = false;
+            }
+        }
+
+        weatherRefresh.addEventListener("click", loadWeather);
+        loadWeather();
+    </script>
 </body>
 </html>
