@@ -13,213 +13,277 @@
              color: #333333;
              margin: 40px;">
 
-    <!-- Main Heading -->
-    <h1 style="background-color: #243b55;
-               color: white;
-               text-align: center;
-               padding: 25px;
-               border-radius: 8px;">
-        Flow Room - Task Allocation
-    </h1>
+    <!-- Accessibility: Skip Navigation -->
+    <a href="#main-content"
+       style="color: #004a99;">
+        Skip to main content
+    </a>
 
-    <p>Welcome to the Flow Room Task Allocation System.</p>
+    <!-- Main Content Landmark -->
+    <main id="main-content">
 
-    <p>
-        This webpage helps our team organise daily tasks
-        and keep track of responsibilities.
-    </p>
+        <!-- Main Heading -->
+        <h1 style="background-color: #243b55;
+                   color: white;
+                   text-align: center;
+                   padding: 25px;
+                   border-radius: 8px;">
+            Flow Room - Task Allocation
+        </h1>
 
-    <!-- Shift Information -->
-    <h2 style="color: #243b55;">Shift Information</h2>
-
-    <div style="background-color: white;
-                padding: 15px;
-                border-radius: 8px;">
-
-        <p><strong>Shift:</strong> Day Shift</p>
-        <p><strong>Department:</strong> Flow Room</p>
-
-    </div>
-
-    <!-- Task Allocation Table -->
-    <h2 style="color: #243b55;">Today's Tasks</h2>
-
-    <table border="1" cellpadding="12"
-           style="width: 100%;
-                  border-collapse: collapse;
-                  background-color: white;
-                  border-color: #dddddd;">
-
-        <tr style="background-color: #243b55;
-                   color: white;">
-            <th>Task</th>
-            <th>Assigned To</th>
-            <th>Deadline</th>
-            <th>Status</th>
-        </tr>
-
-        <tr>
-            <td>System Checks</td>
-            <td>Technician 1</td>
-            <td>08:00</td>
-            <td style="background-color: #d4edda;
-                       color: #155724;">
-                Completed
-            </td>
-        </tr>
-
-        <tr>
-            <td>Check Outstanding Tickets</td>
-            <td>Technician 2</td>
-            <td>10:00</td>
-            <td style="background-color: #fff3cd;
-                       color: #856404;">
-                Pending
-            </td>
-        </tr>
-
-        <tr>
-            <td>Review System Performance</td>
-            <td>Senior Technician</td>
-            <td>12:00</td>
-            <td style="background-color: #d1ecf1;
-                       color: #0c5460;">
-                In Progress
-            </td>
-        </tr>
-
-        <tr>
-            <td>Complete Shift Handover</td>
-            <td>Shift Manager</td>
-            <td>18:00</td>
-            <td style="background-color: #fff3cd;
-                       color: #856404;">
-                Pending
-            </td>
-        </tr>
-
-    </table>
-
-    <!-- Task Completion -->
-    <h2 style="color: #243b55;">Task Completion</h2>
-
-    <div style="background-color: white;
-                padding: 15px;
-                border-radius: 8px;">
-
-        <p>Tick the boxes when tasks are completed:</p>
+        <p>Welcome to the Flow Room Task Allocation System.</p>
 
         <p>
-            <input type="checkbox" checked>
-            System Checks
+            This webpage helps our team organise daily tasks
+            and keep track of responsibilities.
         </p>
 
-        <p>
-            <input type="checkbox">
-            Outstanding Tickets
-        </p>
+        <!-- Shift Information -->
+        <h2 style="color: #243b55;">Shift Information</h2>
 
-        <p>
-            <input type="checkbox">
-            System Performance
-        </p>
-
-        <p>
-            <input type="checkbox">
-            Shift Handover
-        </p>
-
-    </div>
-
-    <!-- About This Website -->
-    <h2 style="color: #243b55;">About This Website</h2>
-
-    <p>
-        This is a basic HTML version of a task allocation
-        system developed to improve team organisation
-        and accountability.
-    </p>
-
-    <hr style="border: 1px solid #dddddd;
-               margin-top: 30px;
-               margin-bottom: 30px;">
-
-    <!-- About Me -->
-    <section style="background-color: white;
-                    padding: 20px;
+        <div style="background-color: white;
+                    padding: 15px;
                     border-radius: 8px;">
 
-        <h2 style="color: #243b55;">About Me</h2>
+            <p><strong>Shift:</strong> Day Shift</p>
+            <p><strong>Department:</strong> Flow Room</p>
+
+        </div>
+
+        <!-- Task Allocation Table -->
+        <h2 style="color: #243b55;">Today's Tasks</h2>
+
+        <table border="1" cellpadding="12"
+               style="width: 100%;
+                      border-collapse: collapse;
+                      background-color: white;
+                      border-color: #dddddd;">
+
+            <caption style="padding: 10px;
+                            text-align: left;
+                            color: #333333;">
+                Daily task allocation and current status
+            </caption>
+
+            <!-- Accessible Column Headings -->
+            <thead>
+                <tr style="background-color: #243b55;
+                           color: white;">
+                    <th scope="col">Task</th>
+                    <th scope="col">Assigned To</th>
+                    <th scope="col">Deadline</th>
+                    <th scope="col">Status</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr>
+                    <th scope="row"
+                        style="text-align: left;
+                               font-weight: normal;">
+                        System Checks
+                    </th>
+                    <td>Technician 1</td>
+                    <td>08:00</td>
+                    <td style="background-color: #d4edda;
+                               color: #155724;">
+                        Completed
+                    </td>
+                </tr>
+
+                <tr>
+                    <th scope="row"
+                        style="text-align: left;
+                               font-weight: normal;">
+                        Check Outstanding Tickets
+                    </th>
+                    <td>Technician 2</td>
+                    <td>10:00</td>
+                    <td style="background-color: #fff3cd;
+                               color: #856404;">
+                        Pending
+                    </td>
+                </tr>
+
+                <tr>
+                    <th scope="row"
+                        style="text-align: left;
+                               font-weight: normal;">
+                        Review System Performance
+                    </th>
+                    <td>Senior Technician</td>
+                    <td>12:00</td>
+                    <td style="background-color: #d1ecf1;
+                               color: #0c5460;">
+                        In Progress
+                    </td>
+                </tr>
+
+                <tr>
+                    <th scope="row"
+                        style="text-align: left;
+                               font-weight: normal;">
+                        Complete Shift Handover
+                    </th>
+                    <td>Shift Manager</td>
+                    <td>18:00</td>
+                    <td style="background-color: #fff3cd;
+                               color: #856404;">
+                        Pending
+                    </td>
+                </tr>
+            </tbody>
+
+        </table>
+
+        <!-- Accessible Task Completion -->
+        <h2 style="color: #243b55;">Task Completion</h2>
+
+        <div style="background-color: white;
+                    padding: 15px;
+                    border-radius: 8px;">
+
+            <p>Tick the boxes when tasks are completed:</p>
+
+            <p>
+                <input type="checkbox"
+                       id="system-checks"
+                       checked>
+                <label for="system-checks">
+                    System Checks
+                </label>
+            </p>
+
+            <p>
+                <input type="checkbox"
+                       id="outstanding-tickets">
+                <label for="outstanding-tickets">
+                    Outstanding Tickets
+                </label>
+            </p>
+
+            <p>
+                <input type="checkbox"
+                       id="system-performance">
+                <label for="system-performance">
+                    System Performance
+                </label>
+            </p>
+
+            <p>
+                <input type="checkbox"
+                       id="shift-handover">
+                <label for="shift-handover">
+                    Shift Handover
+                </label>
+            </p>
+
+            <p style="color: #555555;
+                      font-size: 14px;">
+                Note: These checkboxes are for demonstration
+                purposes and do not automatically update
+                the task statuses in the table.
+            </p>
+
+        </div>
+
+        <!-- About This Website -->
+        <h2 style="color: #243b55;">About This Website</h2>
 
         <p>
-            I am currently studying Software Development and
-            learning how to create websites using HTML
-            for Web Technologies.
+            This is a basic HTML version of a task allocation
+            system developed to improve team organisation
+            and accountability.
         </p>
 
-        <p>
-            I work in a warehouse Flow Room, where
-            organisation, teamwork and communication
-            are important parts of my role.
-        </p>
+        <hr style="border: 1px solid #dddddd;
+                   margin-top: 30px;
+                   margin-bottom: 30px;">
 
-        <!-- Project Information -->
-        <h3 style="color: #243b55;">
-            Why I Created This Website
-        </h3>
+        <!-- About Me Section -->
+        <section style="background-color: white;
+                        padding: 20px;
+                        border-radius: 8px;"
+                 aria-labelledby="about-me-heading">
 
-        <p>
-            I decided to create a
-            <strong>Task Allocation Website</strong>
-            inspired by a project I have been developing
-            for my workplace.
-        </p>
+            <h2 id="about-me-heading"
+                style="color: #243b55;">
+                About Me
+            </h2>
 
-        <p>
-            The main purpose is to help improve
-            <em>organisation and accountability</em>
-            within a team.
-        </p>
+            <p>
+                I am currently studying Software Development
+                and learning how to create websites using HTML
+                for Web Technologies.
+            </p>
 
-        <!-- Website Features -->
-        <h3 style="color: #243b55;">Website Features</h3>
+            <p>
+                I work in a warehouse Flow Room, where
+                organisation, teamwork and communication
+                are important parts of my role.
+            </p>
 
-        <ul style="line-height: 1.8;">
-            <li>Display daily tasks</li>
-            <li>Assign responsibilities to team members</li>
-            <li>Show task deadlines</li>
-            <li>Display task completion status</li>
-            <li>Help organise daily shift activities</li>
-        </ul>
+            <!-- Project Information -->
+            <h3 style="color: #243b55;">
+                Why I Created This Website
+            </h3>
 
-        <!-- Learning Goals -->
-        <h3 style="color: #243b55;">What I Want to Learn</h3>
+            <p>
+                I decided to create a
+                <strong>Task Allocation Website</strong>
+                inspired by a project I have been developing
+                for my workplace.
+            </p>
 
-        <p>
-            I would like to improve my HTML skills
-            before moving on to CSS and JavaScript.
-            My goal is to eventually create a fully
-            functional task management application.
-        </p>
+            <p>
+                The main purpose is to help improve
+                <em>organisation and accountability</em>
+                within a team.
+            </p>
 
-        <p>
-            View the source code for this project on
-            <a href="https://github.com/BartoszMaliszewski/FlowroomAllocations"
-               style="color: #0066cc;
-                      text-decoration: underline;">
-                GitHub
-            </a>.
-        </p>
+            <!-- Website Features -->
+            <h3 style="color: #243b55;">Website Features</h3>
 
-    </section>
+            <ul style="line-height: 1.8;">
+                <li>Display daily tasks</li>
+                <li>Assign responsibilities to team members</li>
+                <li>Show task deadlines</li>
+                <li>Display task completion status</li>
+                <li>Help organise daily shift activities</li>
+            </ul>
 
-    <!-- Footer -->
+            <!-- Learning Goals -->
+            <h3 style="color: #243b55;">What I Want to Learn</h3>
+
+            <p>
+                I would like to improve my HTML skills
+                before moving on to CSS and JavaScript.
+                My goal is to eventually create a fully
+                functional task management application.
+            </p>
+
+            <p>
+                View the source code for this project on
+                <a href="https://github.com/BartoszMaliszewski/FlowroomAllocations"
+                   style="color: #004a99;
+                          text-decoration: underline;">
+                    GitHub
+                </a>.
+            </p>
+
+        </section>
+
+    </main>
+
+    <!-- Accessible Footer -->
     <footer style="text-align: center;
-                   color: #777777;
+                   color: #555555;
                    margin-top: 30px;
                    font-size: 14px;">
 
-        <p>Flow Room Task Allocation - Web Technologies Project</p>
+        <p>
+            Flow Room Task Allocation - Web Technologies Project
+        </p>
 
     </footer>
 
